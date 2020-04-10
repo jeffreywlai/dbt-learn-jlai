@@ -1,0 +1,36 @@
+version: 2
+
+sources:
+  - name: jaffle_shop
+    description: "The Jaffle Shop Raw DB"
+    database: raw
+
+
+
+    tables:
+      - name: customers
+        columns:
+          - name: id
+            tests:
+              - unique
+              - not_null
+
+      - name: orders
+        loaded_at_field: _etl_loaded_at
+        freshness:
+          warn_after: {count: 30, period: day}
+          error_after: {count: 180, period: day}
+        columns:
+          - name: id
+            tests:
+              - unique
+              - not_null
+
+          - name: status
+            tests:
+              - accepted_values:
+                  values: ['placed', 'shipped', 'completed', 'return_pending', 'returned']
+
+          - name: user_id
+            tests:
+              - not_null

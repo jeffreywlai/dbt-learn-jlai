@@ -1,33 +1,32 @@
 version: 2
+
 models:
-  - name: customers
-    description: "{{ doc('customers')}}"
+  - name: stg_jaffle_shop_customers
     columns:
       - name: customer_id
-        description: primary key of the model
         tests:
           - unique
+          - not_null
+      - name: first_name
+        tests:
+          - not_null
+      - name: last_name
+        tests:
           - not_null
 
-  - name: stg_customers
-    columns:
-      - name: customer_id
-        tests:
-          - unique
-          - not_null
-  - name: stg_orders
+
+  - name: stg_jaffle_shop_orders
     columns:
       - name: order_id
         tests:
           - unique
           - not_null
+
       - name: status
         tests:
           - accepted_values:
               values: ['placed', 'shipped', 'completed', 'return_pending', 'returned']
+
       - name: customer_id
         tests:
           - not_null
-          - relationships:
-              to: ref('stg_customers')
-              field: customer_id
